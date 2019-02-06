@@ -1,0 +1,21 @@
+# spring-boot-application-properties-unicode-with-bom
+
+Spring Boot sample project to reproduce an issue when reading commented out application property.
+
+The one test in `de.codecentric.demo.DemoApplicationTests` fails with
+
+ org.junit.ComparisonFailure: expected:<https://www.[codecentric.de]> but was:<https://www.[example.org]>
+
+The `application.properties` in src/test/resources is of type
+
+ $ file src/test/resources/application.properties 
+ src/test/resources/application.properties: UTF-8 Unicode (with BOM) text
+
+Though the property is commented out in the file its value is read by the application.
+
+When changing the `application.properties` to
+ 
+ # de.codecentric.host=https://www.example.org
+
+then the property value is correctly ignored.
+I can even add a blank line as first line in this will - that works also.
